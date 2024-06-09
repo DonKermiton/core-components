@@ -1,19 +1,19 @@
 import {
   ApplicationRef,
-  ComponentRef,
-  createComponent,
   EnvironmentInjector,
   inject,
   Injectable,
+  Injector,
   Renderer2,
   RendererFactory2,
-  Type,
 } from "@angular/core";
+import { PortalBaseStrategy } from "./PortalStrategy/_portal-base.class";
+import { PortalComponentStrategy } from "./PortalStrategy/portal-component.class";
 import {
   isPortalComponent,
+  NewPortal,
   PortalComponent,
   PortalContractOptions,
-  PortalTemplate,
 } from "./types";
 
 @Injectable({
@@ -24,26 +24,33 @@ export class PortalService {
   private rendererFactory: RendererFactory2 = inject(RendererFactory2);
   private appRef: ApplicationRef = inject(ApplicationRef);
   private envInjector: EnvironmentInjector = inject(EnvironmentInjector);
+  private injector: Injector = inject(Injector);
 
   constructor() {
     this.renderer = this.rendererFactory.createRenderer(null, null);
   }
 
   public open(config: PortalContractOptions) {
-    const component = this.createComponent(config);
+    const strategy: PortalBaseStrategy<NewPortal> | null =
+      this.getValidStrategy(config);
+
+    if (strategy === null) {
+      throw new Error("strategy is null");
+    }
+
+    strategy.open();
   }
 
   private getValidStrategy(
     config: PortalContractOptions,
-  ): PortalComponent | PortalTemplate {
-    if (isPortalComponent(config as PortalComponent)) return;
-  }
+  ): PortalBaseStrategy<NewPortal> | null {
+    if (isPortalComponent(config as PortalComponent)) {
+      return new PortalComponentStrategy(
+        config as PortalComponent,
+        this.injector,
+      );
+    }
 
-  private createComponent(component: Type<any>): ComponentRef<unknown> {
-    const componentRef = createComponent(<Type<any>>component, {
-      environmentInjector: this.envInjector,
-    });
-    this.appRef.attachView(componentRef.hostView);
-    return componentRef;
+    return null;
   }
 }

@@ -1,15 +1,8 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'lib-core-components',
-  template: `
-    <p>
-      core-components works!
-    </p>
-  `,
-  styles: [
-  ]
+  selector: "lib-core-components",
+  template: ` <p class="test2">Tes</p> `,
+  styleUrls: ["core-components.scss"],
 })
-export class CoreComponentsComponent {
-
-}
+export class CoreComponentsComponent {}

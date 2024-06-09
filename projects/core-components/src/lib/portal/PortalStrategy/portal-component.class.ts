@@ -4,16 +4,19 @@ import {
   EmbeddedViewRef,
   createComponent,
 } from "@angular/core";
+import { PortalInstance } from "../portal-instance";
 import { PortalComponent } from "../types";
 import { PortalBaseStrategy } from "./_portal-base.class";
 
 export class PortalComponentStrategy extends PortalBaseStrategy<PortalComponent> {
-  public override open(): void {
+  public override open(): PortalInstance {
     const component = this.createComponent();
     const template = (component.hostView as EmbeddedViewRef<any>)
       .rootNodes[0] as HTMLElement;
 
     this.renderer.appendChild(this.config.root || document.body, template);
+
+    return new PortalInstance(component);
   }
 
   private createComponent(): ComponentRef<any> {

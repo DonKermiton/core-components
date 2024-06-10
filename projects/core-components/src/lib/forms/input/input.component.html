@@ -1,0 +1,12 @@
+<div class="control-container">
+  <input
+    *ngIf="formControl"
+    [id]="formControlName"
+    class="material-input"
+    [placeholder]="placeholder"
+    [formControl]="formControl"
+  />
+  <label data-testid="input-label" class="input-label" [for]="formControlName"
+  >{{ label }} {{ controlRequired ? "*" : "" }}</label
+  >
+</div>

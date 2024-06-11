@@ -6,7 +6,16 @@
     "paths": {
       "core-components": [
         "dist/core-components"
-      ]
+      ],
+      "@/core-components/animations": [
+        "projects/core-components/src/lib/animations/index.ts"
+      ],
+      "@/core-components/forms/*": [
+        "projects/core-components/src/lib/forms/*"
+      ],
+      "@/core-components/portal": [
+        "projects/core-components/src/lib/portal/index.ts"
+      ],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
